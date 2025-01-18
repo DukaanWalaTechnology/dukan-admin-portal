@@ -23,3 +23,27 @@ export const getAllShopsStatus=async()=>{
   }
 
 }
+
+export const getSelectedShopData=async(id:any)=>{
+  const url=`/api/admin/shop-data/${id}`
+  try {
+    const response=await axiosInstance.get(url);
+    return response.data;
+  } catch (error: any) {
+    console.error(" Error in fething shops:", error.response || error.message);
+    throw error;
+    
+  }
+
+}
+export const approveShopRequest=async(id:any)=>{
+  const url=`/api/admin/shop-request/${id}/approve`
+  try {
+    const response=await axiosInstance.patch(url);
+    return response.data;
+  } catch (error: any) {
+    console.error(" Error in updating shops:", error.response || error.message);
+    throw error;
+    
+  }
+}

@@ -8,15 +8,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { getAllShopsStatus } from '@/apis/api'
+import { approveShopRequest, getAllShopsStatus, getSelectedShopData } from '@/apis/api'
 import { Loader } from 'rsuite';
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom';
-
+import { ModalComponent } from '@/components/ModalComponent';
+import { ToastAction } from "@/components/ui/toast"
+import { useToast } from '@/hooks/use-toast';
 
 const ShopRequest = () => {
   const[shops,setShops]=useState([])
+  const { toast } = useToast()
   const navigate=useNavigate()
+  const[selectedId,setSeledtedId]=useState(0)
+  const[selectedShopData,setSelectedShopData]=useState()
+  const [isLoading,setIsLoading]=useState(false)
   const fetchAllPendingShops=async()=>{
    try {
     const response=await getAllShopsStatus();
@@ -25,11 +31,17 @@ const ShopRequest = () => {
     
    } catch (error:any) {
     console.log(error.message,"error form fetching jobs")
-
-
+    
    }
     
   }
+  const fetchShopDetails=async(selectedId: any)=>{
+    if (!selectedId) return; 
+    const response=await getSelectedShopData(selectedId);
+    setSelectedShopData(response.data)
+    console.log(response.data,'Response of selected shop')
+  }
+  
   const tableHeadings = [
     {
       label: "ShopName",
@@ -57,13 +69,29 @@ const ShopRequest = () => {
       // icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
     },
   ];
-  const handleVerifyDetails=(id:string)=>{
-    navigate(`/shop-request/${id}`)
-    
+  const handleVerifyDetails=(id:any)=>{
+    setSeledtedId(id)
   }
+  const handleApproveRequest = async (id: number) => {
+    setIsLoading(true);
+    try {
+      const response = await approveShopRequest(id);
+      fetchAllPendingShops();
+    } catch (error: any) {
+      console.error("Error approving shop request:", error?.response?.message);
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: `${error?.response?.data?.message}`,
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      })
+    }finally{
+      setIsLoading(false);
+    }
+  };
   useEffect(()=>{
     fetchAllPendingShops()
-  },[])
+    fetchShopDetails(selectedId)
+  },[selectedId])
   return (
     <>
     <div className="flex flex-1">
@@ -109,7 +137,23 @@ const ShopRequest = () => {
                           
                       </TableCell>
                       <TableCell>
-                        <button onClick={()=>handleVerifyDetails(shop.id)}>Verify</button>
+                        <button onClick={()=>handleVerifyDetails(shop.id)}>{
+                          <>
+                                           
+      <ModalComponent
+       verifybutton="Show Details"
+       closebutton="Close"
+       title="Verify Shop Details"
+       isLoading={isLoading}
+       modalcontent={selectedShopData}
+       handlefunctions={() => handleApproveRequest(shop.id)}
+       />
+                          </>
+                          }</button>
+      
+                          
+                      
+      
                       </TableCell>
                     </TableRow>
                   ))
