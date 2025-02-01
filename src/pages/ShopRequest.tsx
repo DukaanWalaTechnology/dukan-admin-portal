@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -12,7 +12,7 @@ import { approveShopRequest, getAllShopsStatus, getSelectedShopData } from '@/ap
 // import { Loader } from 'rsuite';
 import Loading from '@/components/Loading';
 import { Button } from '@/components/ui/button'
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { ModalComponent } from '@/components/ModalComponent';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from '@/hooks/use-toast';
@@ -21,7 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 const ShopRequest = () => {
   const[shops,setShops]=useState([])
   const { toast } = useToast()
-  const navigate=useNavigate()
+  // const navigate=useNavigate()
   const[selectedId,setSeledtedId]=useState(0)
   const[selectedShopData,setSelectedShopData]=useState()
   const [isLoading,setIsLoading]=useState(false)
@@ -78,6 +78,7 @@ const ShopRequest = () => {
     setIsLoading(true);
     try {
       const response = await approveShopRequest(id);
+      console.log(response,"response")
       fetchAllPendingShops();
     } catch (error: any) {
       console.error("Error approving shop request:", error?.response?.message);
