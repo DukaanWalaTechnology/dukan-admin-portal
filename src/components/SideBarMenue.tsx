@@ -1,18 +1,35 @@
 import React, { useState } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { IconArrowLeft, IconBrandTabler, IconSettings, IconUserBolt } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
-import { useSelector } from "react-redux";
-import { getItemFromLocalStorage } from "@/helper";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getItemFromLocalStorage, removeItemFromLocalStorage } from "@/helper";
+import { logoutUser } from "@/apis/api";
+import { logout } from "@/store/authSlice";
+import { useToast } from "@/hooks/use-toast";
 export function SideBarMenue() {
   const userInfo = useSelector((state: any) => state.auth) || getItemFromLocalStorage("userdata");
   const username = userInfo?.auth?.userData?.name || "User";
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+  const {toast} = useToast()
+  const handleLogout = () => {
+    // await logoutUser()
+    dispatch(logout())
+    localStorage.removeItem("userdata");
+    removeItemFromLocalStorage("token")
+    navigate('/sign-up')
+    toast({
+      title: "LogedOut In Successfully",
+      description: "Admin Logout Successfully",
+    })
+  
+  };  
 
   const links = [
-    {
+    { 
       label: "Dashboard",
       href: "/dashboard",
       icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
@@ -31,6 +48,7 @@ export function SideBarMenue() {
       label: "Logout",
       href: "#",
       icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+      action:handleLogout
     },
   ];
 
@@ -51,19 +69,27 @@ export function SideBarMenue() {
           <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
             <Logo />
             <div className="mt-8 flex flex-col gap-2">
-              {links.map((link, idx) => (
-                <Link key={idx} to={link.href}>
-                  <SidebarLink
-                    link={link}
-                    className={cn(
-                      "flex items-center p-2 rounded-md text-sm",
-                      location.pathname === link.href
-                        ? "bg-gray-200 dark:bg-neutral-700 text-black dark:text-white"
-                        : "text-neutral-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-600"
-                    )}
-                  />
-                </Link>
-              ))}
+            {links.map((link, idx) => (
+  link.label === "Logout" ? (
+    <button key={idx} onClick={link.action} className="flex items-center p-2 rounded-md text-sm text-neutral-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-600">
+      {link.icon}
+      <span className="ml-2">{link.label}</span>
+    </button>
+  ) : (
+    <Link key={idx} to={link.href}>
+      <SidebarLink
+        link={link}
+        className={cn(
+          "flex items-center p-2 rounded-md text-sm",
+          location.pathname === link.href
+            ? "bg-gray-200 dark:bg-neutral-700 text-black dark:text-white"
+            : "text-neutral-700 dark:text-neutral-200 hover:bg-gray-100 dark:hover:bg-neutral-600"
+        )}
+      />
+    </Link>
+  )
+))}
+
             </div>
           </div>
           <div>

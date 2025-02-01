@@ -9,12 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { approveShopRequest, getAllShopsStatus, getSelectedShopData } from '@/apis/api'
-import { Loader } from 'rsuite';
+// import { Loader } from 'rsuite';
+import Loading from '@/components/Loading';
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom';
 import { ModalComponent } from '@/components/ModalComponent';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from '@/hooks/use-toast';
+import { Loader } from 'lucide-react';
 
 const ShopRequest = () => {
   const[shops,setShops]=useState([])
@@ -97,7 +99,7 @@ const ShopRequest = () => {
     <div className="flex flex-1">
           <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full ">
           <Table>
-              <TableCaption>A list of your recent invoices.</TableCaption>
+              <TableCaption>A list of your recent Shop Reuqest.</TableCaption>
               <TableHeader>
                 <TableRow>
                   {
@@ -114,7 +116,7 @@ const ShopRequest = () => {
               <TableBody>
                 {
                   shops?.length==0?(<>
-                  <Loader size="md" content="Medium" />
+                  <Loading/>
                   </>):(<>
                     {
                   shops?.map((shop:any,index)=>(

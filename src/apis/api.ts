@@ -10,7 +10,15 @@ export const loginUser = async (data: any) => {
     throw error;
   }
 };
+export const logoutUser = async () => {
+  const url = "/api/user/logout";
+  try {
+    await axiosInstance.post(url);
+  } catch (error: any) {
+    console.error("Logout User API Error:", error.response || error.message);
+  }
 
+}
 export const getAllShopsStatus=async()=>{
   const url=`/api/admin/shop-request`
   try {
