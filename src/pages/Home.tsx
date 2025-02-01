@@ -1,6 +1,6 @@
 
 import { Aura } from '@/components/Aura'
-import { SideBarMenue } from '@/components/SideBarMenue'
+// import { SideBarMenue } from '@/components/SideBarMenue'
 
 const Home = () => {
   return (

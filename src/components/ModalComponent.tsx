@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+// import React from "react";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalTrigger } from "./ui/animated-modal";
 import { Loader } from "lucide-react";
-export function ModalComponent({ verifybutton, closebutton, title, modalcontent,handlefunctions,isLoading }:any) {
+export function ModalComponent({ verifybutton, title, modalcontent,handlefunctions,isLoading }:any) {
 
 
   return (

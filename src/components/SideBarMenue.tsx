@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Sidebar, SidebarBody, SidebarLink } from "./ui/sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { getItemFromLocalStorage, removeItemFromLocalStorage } from "@/helper";
-import { logoutUser } from "@/apis/api";
+// import { logoutUser } from "@/apis/api";
 import { logout } from "@/store/authSlice";
 import { useToast } from "@/hooks/use-toast";
 export function SideBarMenue() {

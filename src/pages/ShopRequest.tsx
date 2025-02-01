@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { ModalComponent } from '@/components/ModalComponent';
 import { ToastAction } from "@/components/ui/toast"
 import { useToast } from '@/hooks/use-toast';
-import { Loader } from 'lucide-react';
+// import { Loader } from 'lucide-react';
 
 const ShopRequest = () => {
   const[shops,setShops]=useState([])

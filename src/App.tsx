@@ -1,5 +1,5 @@
 // App.tsx
-import React from "react";
+// import React from "react";
 import { Routes, Route } from "react-router-dom";
 // import { SideBarMenue } from "./SideBarMenue";
 import Home from "./pages/Home";
@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import ShopRequest from "./pages/ShopRequest";
 import { SideBarMenue } from "./components/SideBarMenue";
 import SignUp from "./pages/SignUp";
-import DashboardLayout from "./components/DashboardLayout";
+// import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 
 const App = () => {
