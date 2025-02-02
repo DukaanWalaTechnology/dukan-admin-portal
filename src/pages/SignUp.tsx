@@ -47,7 +47,7 @@ const SignUp = () => {
       setItemInLocalstorage("userdata",response);
       
       dispatch(login(response))
-      navigate("/home");
+      navigate("/dashboard");
       toast({
         title: "Loged In Successfully",
         description: "Access The Admin Portal To Liverage the Shops ",

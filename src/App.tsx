@@ -9,18 +9,24 @@ import { SideBarMenue } from "./components/SideBarMenue";
 import SignUp from "./pages/SignUp";
 // import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
-
+import PrivateRoute from "./components/PrivateRoute";
 const App = () => {
   return (
     <Routes>
       {/* Sidebar layout */}
       <Route path="/sign-up" element={<SignUp />}></Route>
-      <Route path="/" element={<SideBarMenue />}>
-        {/* Nested routes */}
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <SideBarMenue />
+          </PrivateRoute>
+        }
+      >
+        {/* Protected Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home" element={<Home />} />
         <Route path="/shop-request" element={<ShopRequest />} />
-        {/* <Route path="dashboard/profile" element={<Home />} /> */}
       </Route>
     </Routes>
   );

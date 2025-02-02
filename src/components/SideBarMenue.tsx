@@ -15,6 +15,14 @@ export function SideBarMenue() {
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const {toast} = useToast()
+  if(!userInfo){
+    toast({
+      title: "Access denied",
+      description: "Please Login to access",
+    })
+
+  }
+  // navigate('/sign-up')
   const handleLogout = () => {
     // await logoutUser()
     dispatch(logout())
@@ -27,7 +35,6 @@ export function SideBarMenue() {
     })
   
   };  
-
   const links = [
     { 
       label: "Dashboard",
