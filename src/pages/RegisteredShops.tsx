@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import ShopCards from '@/components/ShopCards';
 import { getRegisteredShops } from '@/apis/api';
 import HashLoader from 'react-spinners/HashLoader';

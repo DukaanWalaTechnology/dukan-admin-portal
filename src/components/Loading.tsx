@@ -1,5 +1,5 @@
 
-import { Loader } from "lucide-react";
+
 import {RingLoader} from "react-spinners"
 function Loading() {
   return (
