@@ -55,3 +55,15 @@ export const approveShopRequest=async(id:any)=>{
     
   }
 }
+
+export const getRegisteredShops=async()=>{
+  const url=`/api/admin/registered`
+  try {
+    const response=await axiosInstance.get(url);
+    return response.data;
+  } catch (error: any) {
+    console.error("Error in fething shops:", error.response || error.message);
+    throw error;
+    
+  }
+}

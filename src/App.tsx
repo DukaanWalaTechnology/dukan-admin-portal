@@ -10,6 +10,8 @@ import SignUp from "./pages/SignUp";
 // import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import RegisteredShops from "./pages/RegisteredShops";
+import VerifyShops from "./pages/VerifyShops";
 const App = () => {
   return (
     <Routes>
@@ -26,7 +28,11 @@ const App = () => {
         {/* Protected Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home" element={<Home />} />
+         <Route path="/registered-shops" element={<RegisteredShops />} />
         <Route path="/shop-request" element={<ShopRequest />} />
+        <Route path="/shop-request-verification/:id" element={<VerifyShops />} />
+       
+  
       </Route>
     </Routes>
   );

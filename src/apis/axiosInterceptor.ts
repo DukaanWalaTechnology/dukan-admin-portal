@@ -3,6 +3,7 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "https://dukan-backend.onrender.com", // Replace with your actual backend URL
+  // baseURL: "http://localhost:8000",
   timeout: 10000, // Request timeout
 });
 

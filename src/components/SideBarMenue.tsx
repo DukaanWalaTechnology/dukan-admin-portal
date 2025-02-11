@@ -9,6 +9,9 @@ import { getItemFromLocalStorage, removeItemFromLocalStorage } from "@/helper";
 // import { logoutUser } from "@/apis/api";
 import { logout } from "@/store/authSlice";
 import { useToast } from "@/hooks/use-toast";
+import { Store } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+
 export function SideBarMenue() {
   const userInfo = useSelector((state: any) => state.auth) || getItemFromLocalStorage("userdata");
   const username = userInfo?.auth?.userData?.name || "User";
@@ -50,6 +53,12 @@ export function SideBarMenue() {
       label: "Shop Request",
       href: "/shop-request",
       icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+    },
+    {
+      label: "Registered shops",
+      href: "/registered-shops",
+   
+      icon:  <Store className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
     },
     {
       label: "Logout",
@@ -100,20 +109,20 @@ export function SideBarMenue() {
             </div>
           </div>
           <div>
-            <SidebarLink
-              link={{
-                label: `${username}`,
-                href: "#",
-                icon: (
-                  <img
-                    src=""
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    alt="Avatar"
-                  />
-                ),
-              }}
-            />
-          </div>
+  <SidebarLink
+    link={{
+      label: `${username}`,
+      href: "#",
+      icon: (
+        <Avatar className="border border-gray-300 dark:border-gray-600 rounded-full">
+          <AvatarImage src={""} />
+          <AvatarFallback>{username ? username.charAt(0).toUpperCase() : "?"}</AvatarFallback>
+        </Avatar>
+      ),
+    }}
+  />
+</div>
+
         </SidebarBody>
       </Sidebar>
 

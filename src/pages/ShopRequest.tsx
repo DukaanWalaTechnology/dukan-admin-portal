@@ -1,177 +1,56 @@
-import  { useEffect, useState } from 'react'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { approveShopRequest, getAllShopsStatus, getSelectedShopData } from '@/apis/api'
-// import { Loader } from 'rsuite';
-import Loading from '@/components/Loading';
-import { Button } from '@/components/ui/button'
-// import { useNavigate } from 'react-router-dom';
-import { ModalComponent } from '@/components/ModalComponent';
-import { ToastAction } from "@/components/ui/toast"
-import { useToast } from '@/hooks/use-toast';
-// import { Loader } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { getAllShopsStatus } from "@/apis/api";
+import ShopCards from "@/components/ShopCards";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const ShopRequest = () => {
-  const[shops,setShops]=useState([])
-  const { toast } = useToast()
-  // const navigate=useNavigate()
-  const[selectedId,setSeledtedId]=useState(0)
-  const[selectedShopData,setSelectedShopData]=useState()
-  const [isLoading,setIsLoading]=useState(false)
-  const fetchAllPendingShops=async()=>{
-   try {
-    const response=await getAllShopsStatus();
-    console.log(response,'Response of all fetched Shops')
-    setShops(response.data)
-    
-   } catch (error:any) {
-    console.log(error.message,"error form fetching jobs")
-    
-   }
-    
-  }
-  const fetchShopDetails=async(selectedId: any)=>{
-    if (!selectedId) return; 
-    const response=await getSelectedShopData(selectedId);
-    setSelectedShopData(response.data)
-    console.log(response.data,'Response of selected shop')
-  }
-  
-  const tableHeadings = [
-    {
-      label: "ShopName",
-      href: "/dashboard",
-      // icon: <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-    // {
-    //   label: "Owner Name",
-    //   href: "/home",
-    //   // icon: <IconUserBolt className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    // },
-    {
-      label: "Shop Address",
-      href: "/shop-request",
-      // icon: <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Status",
-      href: "#",
-      // icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-    {
-      label: "Verify-Details",
-      href: "#",
-      // icon: <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-    },
-  ];
-  const handleVerifyDetails=(id:any)=>{
-    setSeledtedId(id)
-  }
-  const handleApproveRequest = async (id: number) => {
-    setIsLoading(true);
+  const [shops, setShops] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchAllPendingShops = async () => {
     try {
-      const response = await approveShopRequest(id);
-      console.log(response,"response")
-      fetchAllPendingShops();
+      const response = await getAllShopsStatus();
+      console.log(response, "Response of all fetched Shops");
+      setShops(response.data);
     } catch (error: any) {
-      console.error("Error approving shop request:", error?.response?.message);
-      toast({
-        title: "Uh oh! Something went wrong.",
-        description: `${error?.response?.data?.message}`,
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
-      })
-    }finally{
-      setIsLoading(false);
+      console.log(error.message, "error from fetching jobs");
+    } finally {
+      setLoading(false);
     }
   };
-  useEffect(()=>{
-    fetchAllPendingShops()
-    fetchShopDetails(selectedId)
-  },[selectedId])
+
+  useEffect(() => {
+    fetchAllPendingShops();
+  }, []);
+
   return (
-    <>
     <div className="flex flex-1">
-          <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full ">
-          <Table>
-              <TableCaption>A list of your recent Shop Reuqest.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  {
-                    tableHeadings.map((headings,index)=>(
-                      <>
-                  
-                      <TableHead key={index} className="w-[100px]">{headings.label}</TableHead>
-                      </>
-                    ))
-                  }
-                  
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {
-                  shops?.length==0?(<>
-                  <Loading/>
-                  </>):(<>
-                    {
-                  shops?.map((shop:any,index)=>(
-                    <TableRow key={index}>
-                      <TableCell>
-                        {shop.shopName}
-                        </TableCell>
-                      <TableCell className='text-ellipsis overflow-hidden'>{shop.address}</TableCell>
-                      
-                      <TableCell>
-                      {shop.status==="APPROVED"?(<>
-                        <Button>
-                          APPROVED
-                          </Button>
-                      </>):(<>
-                        <Button className='bg-red-500 text-white hover:bg-orange-600'>
-                          PENDING
-                          </Button>
-                      </>)}
-                          
-                      </TableCell>
-                      <TableCell>
-                        <button onClick={()=>handleVerifyDetails(shop.id)}>{
-                          <>
-                                           
-      <ModalComponent
-       verifybutton="Show Details"
-       closebutton="Close"
-       title="Verify Shop Details"
-       isLoading={isLoading}
-       modalcontent={selectedShopData}
-       handlefunctions={() => handleApproveRequest(shop.id)}
-       />
-                          </>
-                          }</button>
-      
-                          
-                      
-      
-                      </TableCell>
-                    </TableRow>
-                  ))
-                }
-                  </>)
-                }
-                
-               
-              </TableBody>
-            </Table>
-
+      <div className="p-2 md:p-10 rounded-tl-2xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex flex-col gap-2 flex-1 w-full">
+        {loading ? (
+          // Skeleton Loader while fetching
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(6)].map((_, index) => (
+              <div
+                key={index}
+                className="p-4 border rounded-xl shadow-md bg-neutral-100 dark:bg-neutral-800"
+              >
+                <Skeleton className="h-6 w-3/4 mb-2 rounded-xl" />
+                <Skeleton className="h-4 w-1/2 mb-4 rounded-xl" />
+                <Skeleton className="h-40 w-full mb-2 rounded-xl" />
+                <div className="flex justify-between">
+                  <Skeleton className="h-6 w-1/4 rounded-xl" />
+                  <Skeleton className="h-6 w-1/4 rounded-xl" />
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-    </>
-  )
-}
+        ) : (
+          // Show real shop cards once data is loaded
+          <ShopCards shops={shops} />
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default ShopRequest
+export default ShopRequest;
